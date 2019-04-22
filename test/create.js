@@ -7,4 +7,4 @@ const trie = create(sampleDictionary);
 
 console.log( JSON.stringify(trie, null, 2) );
 
-deepStrictEqual( sampleTrie, trie, "\n\tTrie.create(dictionary) does not match ./sample-trie.json\n\tTrie again!\n" );
+deepStrictEqual( sampleTrie, trie );

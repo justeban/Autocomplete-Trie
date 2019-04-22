@@ -10,7 +10,7 @@ var app = new Vue({
      */
     result () {
       if( this.query.trim().length === 0 ) return false;
-      return fetch(`/api/check-term?q=${this.query.toLowerCase()}`)
+      return fetch(`/api/check-term?q=${this.query}`)
         .then(response => response.json())
     }
   }

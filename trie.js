@@ -26,9 +26,54 @@
  *   An object containing all words from given dictionary
  *   stored in a Trie structure that is compatible with check()
  */
-const create = dictionary => {
+class Node {
+  constructor(value = null) {
+    this.value = value && value.definition
+    this.children = {};
+  }
+}
 
-  return {};
+class Trie {
+
+  constructor() {
+    this.value = null;
+    this.children = {};
+  }
+
+  set(word, definition) {
+
+    const _set = (trie, word, definition) => {
+ 
+      const firstLetter = word.slice(0, 1);
+
+      if (word.length === 1) {
+        trie.children[firstLetter] = new Node({ definition });
+        return;
+      }
+
+      if (trie.children[firstLetter]) {
+        return _set(trie.children[firstLetter], word.slice(1), definition);
+      }
+
+      
+
+      trie.value = trie.value || null;
+      trie.children[firstLetter] = new Node();
+
+      _set(trie.children[firstLetter], word.slice(1), definition);
+    }
+
+    _set(this, word, definition);
+  }
+}
+
+const create = dictionary => {
+  // console.log({dictionary});
+  const trie = new Trie;
+
+  const arrayOfWords = Object.keys(dictionary);
+  arrayOfWords.map(word => trie.set(word, dictionary[word]));
+  return JSON.parse(JSON.stringify(trie));
 }
 
 /*
@@ -63,8 +108,31 @@ const create = dictionary => {
  *
  */
 const check = ( trie, query ) => {
+  console.log('Hello', {query});
+  let firstLetter = query.slice(0,1);
+  const _walk = (_trie, _query) => {
+    _firstLetter = _query && _query.slice(0, 1);
+    console.log({_query, _trie});
+    if (_query.length === 0) {
+      if (_trie.value) {
 
-  return {};
+        return _trie.value;
+      } else if (Object.keys(_trie.children).length > 0) {
+        return true;
+      } else { 
+        return false; 
+      }
+    
+    } else if (_trie && _trie.children && _trie.children[_firstLetter]) {
+      return _walk(_trie.children[_firstLetter], _query.slice(1));
+    } else {
+      return false;
+    }
+  }
+
+  const _check = _walk(trie.children[firstLetter], query.slice(1));
+  console.log(_check);
+  return typeof _check === "boolean"  ? _check : {..._check};
 }
 
 module.exports = {
