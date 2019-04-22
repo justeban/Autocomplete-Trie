@@ -108,12 +108,16 @@ const create = dictionary => {
  *
  */
 const check = ( trie, query ) => {
-  console.log('Hello', {query});
-  let firstLetter = query.slice(0,1);
+
+  const firstLetter = query.slice(0,1);
+
   const _walk = (_trie, _query) => {
-    _firstLetter = _query && _query.slice(0, 1);
-    console.log({_query, _trie});
+
+    const _firstLetter = _query && _query.slice(0, 1);
+    console.log({_query})
+    console.log(Object.keys(_trie.children));
     if (_query.length === 0) {
+
       if (_trie.value) {
 
         return _trie.value;
@@ -131,7 +135,6 @@ const check = ( trie, query ) => {
   }
 
   const _check = _walk(trie.children[firstLetter], query.slice(1));
-  console.log(_check);
   return typeof _check === "boolean"  ? _check : {..._check};
 }
 

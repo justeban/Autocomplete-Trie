@@ -8,7 +8,7 @@ const loadData = async() => {
   console.time('Dictionary is ready!');
   dictionary = await unpackDictionary();
   console.timeEnd('Dictionary is ready!');
-
+  console.log(Object.keys(dictionary).length);
   console.log('Creating Trie...');
   console.time('Trie is ready!');
   trie = create( dictionary );
@@ -24,7 +24,7 @@ const loadData = async() => {
  */
 const checkTerm = (req, res) => {
   const [ _, ...queryParams ] = req.url.split('?q=');
-  const query = queryParams.join('');
+  const query = decodeURI(queryParams.join(''));
   const result = query.length > 0 ? check( trie, query ) : false;
 
   res.end(JSON.stringify(result));
